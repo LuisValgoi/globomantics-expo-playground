@@ -20,7 +20,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*", "assets"],
+    "assetBundlePatterns": [
+      "**/*",
+      "assets"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.globomantics.App"
@@ -30,11 +33,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "sdkVersion": "48.0.0"
+    "sdkVersion": "48.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "ea84b86a-c938-43e5-bc0a-e4ec178bb375"
+      }
+    }
   }
 }

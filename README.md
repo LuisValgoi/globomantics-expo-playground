@@ -20,7 +20,7 @@ This repository was built for educational purposes only.
 
 - https://expo.dev/@luisvalgoi/globomantics?serviceType=classic&distribution=expo-go&release-channel=testing
 
-- exp://exp.host/@luisvalgoi/globomantics?release-channel=testing
+- https://exp.host/@luisvalgoi/globomantics?release-channel=testing
 
 # Getting Started
 
