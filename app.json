@@ -1,10 +1,19 @@
 {
   "expo": {
     "plugins": [
+      "@react-native-firebase/app",
       [
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
         }
       ]
     ],
@@ -20,13 +29,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*",
-      "assets"
-    ],
+    "assetBundlePatterns": ["**/*", "assets"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.globomantics.App"
+      "bundleIdentifier": "com.globomantics.App",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "package": "com.globomantics.App",
@@ -34,9 +41,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

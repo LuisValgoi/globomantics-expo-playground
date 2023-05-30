@@ -11,6 +11,8 @@ export function useSignInWithGoogle() {
   const [token, setToken] = useState<string | null>('');
   const [userInfo, setUserInfo] = useState(null);
   const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId:
+      '66577883763-vsl2ucs2cl61iadskm6spi284kgva0rd.apps.googleusercontent.com',
     expoClientId:
       '66577883763-0drcogrmmjg4vmhs4dkjc5e1n77odgpo.apps.googleusercontent.com',
   });
