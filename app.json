@@ -1,5 +1,6 @@
 {
   "expo": {
+    "jsEngine": "hermes",
     "plugins": [
       "@react-native-firebase/app",
       [
@@ -29,8 +30,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*", "assets"],
+    "assetBundlePatterns": [
+      "**/*",
+      "assets"
+    ],
     "ios": {
+      "jsEngine": "jsc",
       "supportsTablet": true,
       "bundleIdentifier": "com.globomantics.App",
       "googleServicesFile": "./GoogleService-Info.plist"
@@ -41,7 +46,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["android.permission.RECORD_AUDIO"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -51,6 +58,12 @@
       "eas": {
         "projectId": "ea84b86a-c938-43e5-bc0a-e4ec178bb375"
       }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ea84b86a-c938-43e5-bc0a-e4ec178bb375"
     }
   }
 }

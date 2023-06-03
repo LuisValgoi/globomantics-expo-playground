@@ -18,13 +18,15 @@ This repository was built for educational purposes only.
 
 # Expo Link
 
-- https://expo.dev/@luisvalgoi/globomantics?serviceType=classic&distribution=expo-go&release-channel=testing
-
-- https://exp.host/@luisvalgoi/globomantics?release-channel=testing
+- https://expo.dev/@luisvalgoi/globomantics
 
 # Getting Started
 
-- yarn ios
+- `yarn ios`: run in the simulator.
+
+- `eas build -p ios --profile preview`: build and deploy into expo infra.
+
+- `expo publish`: publish an OTA update.
 
 # Env Variables
 
