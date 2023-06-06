@@ -29,8 +29,7 @@ const SignIn: React.FC<SignInProps> = ({ navigation }) => {
   const handleSignInWithGoogle = async () => {
     await onSignInWithGoogle()
       .then(() => {
-        // navigation.navigate('News', {});
-        console.log('REDIRECT?');
+        navigation.navigate('News', {});
       })
       .catch(() => {});
   };

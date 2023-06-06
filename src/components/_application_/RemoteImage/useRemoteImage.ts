@@ -1,12 +1,11 @@
-import { StorageError, getBlob, ref } from 'firebase/storage';
 import { storage } from 'src/services/firebase';
 import { useEffect, useState } from 'react';
+import { ReactNativeFirebase } from '@react-native-firebase/app';
 
 function useRemoteImage(path: string) {
-  const imgRef = ref(storage, path);
+  const imgRef = storage.ref(path);
   const [loading, setLoading] = useState<boolean>();
   const [src, setSrc] = useState<string>();
-  const [error, setError] = useState<StorageError>();
 
   useEffect(() => {
     async function fetch() {
@@ -16,23 +15,21 @@ function useRemoteImage(path: string) {
 
       setLoading(true);
       try {
-        const blob = await getBlob(imgRef);
-        const src = URL.createObjectURL(blob);
+        const src = await imgRef.getDownloadURL();
         setSrc(src);
       } catch (error) {
-        setError(error as StorageError)
+        throw Error((error as ReactNativeFirebase.NativeFirebaseError).message);
       } finally {
         setLoading(false);
       }
     }
 
     fetch();
-  }, [imgRef]);
+  }, []);
 
   return {
     filename: imgRef.name,
     loading,
-    error,
     src,
   };
 }

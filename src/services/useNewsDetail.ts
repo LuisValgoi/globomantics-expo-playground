@@ -1,11 +1,9 @@
-import { FirestoreError, doc, getDoc } from 'firebase/firestore';
 import { firestore, storage } from 'src/services/firebase';
 import { INews } from 'src/interfaces/interfaces';
 import { useEffect, useState } from 'react';
-import { ref } from 'firebase/storage';
+import { ReactNativeFirebase } from '@react-native-firebase/app';
 
 function useNewsDetail(id: string) {
-  const [error, setError] = useState<FirestoreError>();
   const [loading, setLoading] = useState<boolean>();
   const [news, setNews] = useState<INews>();
 
@@ -13,14 +11,16 @@ function useNewsDetail(id: string) {
     async function fetch() {
       setLoading(true);
       try {
-        const newsDocRef = doc(firestore, 'news', id);
-        const newsDoc = await getDoc(newsDocRef);
-
-        const imageName = ref(storage, `images/news/${id}`).name;
-        const newsDetail = { ...newsDoc?.data(), id: newsDoc.id, imageName } as INews;
+        const newsDoc = await firestore.doc(`news/${id}`).get();
+        const imageName = await storage.ref(`images/news/${id}`).name;
+        const newsDetail = {
+          ...newsDoc?.data(),
+          id: newsDoc.id,
+          imageName,
+        } as INews;
         setNews(newsDetail);
       } catch (error) {
-        setError(error as FirestoreError);
+        throw Error((error as ReactNativeFirebase.NativeFirebaseError).message);
       } finally {
         setLoading(false);
       }
@@ -30,7 +30,6 @@ function useNewsDetail(id: string) {
 
   return {
     loading,
-    error,
     news,
   };
 }

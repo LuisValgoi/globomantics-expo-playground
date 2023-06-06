@@ -16,7 +16,7 @@ type StackNavigatorProps = {
 const StackNavigator: React.FC<StackNavigatorProps> = ({
   onLayoutRootView,
 }) => {
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   return (
     <NavigationContainer onReady={onLayoutRootView}>

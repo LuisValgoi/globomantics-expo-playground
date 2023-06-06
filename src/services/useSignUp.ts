@@ -1,13 +1,8 @@
-import {
-  AuthError,
-  updateProfile,
-  createUserWithEmailAndPassword as createProfile,
-} from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { SignUpScreenCompFormValues } from 'src/components/_screens_/SignUp';
 import { useAuth } from 'src/hooks/useAuth';
 import { auth, firestore } from 'src/services/firebase';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 export function useSignUp() {
   const { user } = useAuth();
@@ -16,15 +11,18 @@ export function useSignUp() {
   const onSubmit = async (form: SignUpScreenCompFormValues) => {
     setLoading(true);
     try {
-      const { user } = await createProfile(auth, form.email, form.password);
-      await updateProfile(user, { displayName: form.name });
+      const { user } = await auth.createUserWithEmailAndPassword(
+        form.email,
+        form.password
+      );
+      await auth.currentUser?.updateProfile({
+        displayName: form.name,
+      });
 
-      const userAddRef = doc(firestore, 'users', user.uid);
-      const userAddPayload = { name: form.name, email: form.email };
-      await setDoc(userAddRef, userAddPayload);
-
+      const payload = { name: form.name, email: form.email };
+      await firestore.doc(`users/${user.uid}`).update(payload);
     } catch (error) {
-      throw Error((error as AuthError).message);
+      throw Error((error as FirebaseAuthTypes.NativeFirebaseAuthError).message);
     } finally {
       setLoading(false);
     }

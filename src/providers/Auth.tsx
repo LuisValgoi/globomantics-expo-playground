@@ -1,4 +1,4 @@
-import { User, onAuthStateChanged } from 'firebase/auth';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import React, {
   createContext,
   Dispatch,
@@ -7,12 +7,11 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { useApp } from 'src/hooks/useApp';
-import { auth } from 'src/services/firebase';
+import { app, auth } from 'src/services/firebase';
 
 export type AuthContextValue = {
-  user: User | null;
-  setUser: Dispatch<SetStateAction<User | null>>;
+  user: FirebaseAuthTypes.User | null;
+  setUser: Dispatch<SetStateAction<FirebaseAuthTypes.User | null>>;
 };
 
 export const AuthContext = createContext<AuthContextValue>(
@@ -20,20 +19,50 @@ export const AuthContext = createContext<AuthContextValue>(
 );
 
 const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const { setUnsubscribe } = useApp()
-  const [user, setUser] = useState<User | null>(null);
+  const [initializing, setInitializing] = useState(true);
+  const [listenUser, setListenUser] = useState(false);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
+  /** Listen for auth state changes */
   useEffect(() => {
-    const listener = onAuthStateChanged(auth, async (user) => {
-      setUser(user);
+    const authListener = auth.onAuthStateChanged((result) => {
+      setUser(result);
+      if (initializing && !listenUser) {
+        setInitializing(false);
+        setListenUser(true);
+      }
     });
 
-    setUnsubscribe((prev) => [...prev, listener]);
+    return () => {
+      if (authListener) {
+        authListener();
+      }
+    };
+  }, [initializing, listenUser]);
+
+  /** Listen for user changes */
+  useEffect(() => {
+    let userListener: () => void;
+
+    if (listenUser) {
+      userListener = auth.onIdTokenChanged((result) => {
+        setUser(result);
+      });
+    }
 
     return () => {
-      listener();
+      if (userListener) {
+        userListener();
+      }
     };
-  }, [auth]);
+  }, [listenUser]);
+
+  if (initializing) {
+    let waiting = true;
+    setTimeout(() => {
+      waiting = false;
+    }, 1000);
+  }
 
   return (
     <AuthContext.Provider

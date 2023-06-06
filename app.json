@@ -3,6 +3,7 @@
     "jsEngine": "hermes",
     "plugins": [
       "@react-native-firebase/app",
+      "@react-native-google-signin/google-signin",
       [
         "expo-image-picker",
         {
@@ -40,16 +41,6 @@
       "bundleIdentifier": "com.globomantics.App",
       "googleServicesFile": "./GoogleService-Info.plist"
     },
-    "android": {
-      "package": "com.globomantics.App",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
-    },
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -64,6 +55,12 @@
     },
     "updates": {
       "url": "https://u.expo.dev/ea84b86a-c938-43e5-bc0a-e4ec178bb375"
+    },
+    "android": {
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.globomantics.App"
     }
   }
 }

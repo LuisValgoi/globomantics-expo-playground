@@ -1,11 +1,10 @@
-import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { firestore } from 'src/services/firebase';
-import { NewsFormScreenCompFormValues } from 'src/components/_screens_/NewsForm';
-import { StorageError, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { useState } from 'react';
-import { ref } from 'firebase/storage';
 import { storage } from 'src/services/firebase';
 import { useAuth } from 'src/hooks/useAuth';
+import { ReactNativeFirebase } from '@react-native-firebase/app';
+import { app } from 'src/services/firebase';
+import { NewsFormScreenCompFormValues } from 'src/components/_screens_/NewsForm';
 
 function useNewsCreate() {
   const { user } = useAuth();
@@ -18,24 +17,22 @@ function useNewsCreate() {
   }: NewsFormScreenCompFormValues) => {
     setLoading(true);
     try {
-      const addRef = collection(firestore, 'news');
-      const createdAt = serverTimestamp();
+      const createdAt = app.firestore.FieldValue.serverTimestamp();
       const author = user?.uid;
       const addPayload = { title, description, createdAt, author };
-      const news = await addDoc(addRef, addPayload);
+      const news = await firestore.collection('news').add(addPayload);
 
-      const imageRef = ref(storage, `images/news/${news.id}`);
+      const imageRef = storage.ref(`images/news/${news.id}`);
       const imageName = imageRef.name;
       const imageSrc = await fetch(image);
       const imageBlob = await imageSrc.blob();
-      await uploadBytes(imageRef, imageBlob);
+      await storage.ref().child(imageRef.name).put(imageBlob);
 
-      const imagePath = await getDownloadURL(imageRef);
-      const updateRef = doc(firestore, news.path);
+      const imagePath = await imageRef.getDownloadURL();
       const updatePayload = { id: news.id, imagePath, imageName };
-      await updateDoc(updateRef, updatePayload);
+      await firestore.doc(news.path).update(updatePayload);
     } catch (error) {
-      throw Error((error as StorageError).message);
+      throw Error((error as ReactNativeFirebase.NativeFirebaseError).message);
     } finally {
       setLoading(false);
     }

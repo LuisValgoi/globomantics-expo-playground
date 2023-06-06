@@ -1,13 +1,13 @@
 import { Box, Pressable, Text, VStack } from 'native-base';
 import React from 'react';
 import RemoteImage from '../RemoteImage';
-import { Timestamp } from 'firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 type NewsListItemProps = {
   onPress: () => void;
   title: string;
   description: string;
-  createdAt?: Timestamp;
+  createdAt?: FirebaseFirestoreTypes.Timestamp;
   imagePath?: string;
 };
 

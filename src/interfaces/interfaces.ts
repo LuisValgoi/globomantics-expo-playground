@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Timestamp } from 'firebase/firestore';
+import { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
 
 export type StackNavigatorProps = {
   Stack: any;
@@ -32,7 +32,7 @@ export type INews = {
   id: string;
   title: string;
   description: string;
-  createdAt: Timestamp;
+  createdAt: FirebaseFirestoreTypes.Timestamp;
   author: string;
   imagePath?: string;
   imageName?: string;
